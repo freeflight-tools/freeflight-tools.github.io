@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Free Flight Tools — social preview card</title>
+<!-- ══════════════════════════════════════════════════════════════════════
+     Generates img/og-hub.png, the 1200x630 image chat apps show when this
+     site's link is pasted. Build-time only.
+
+     Serve the repo root, then:
+
+       CH="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+       "$CH" --headless=new --virtual-time-budget=5000 \
+             --window-size=1200,630 --screenshot=img/og-hub.png \
+             "http://localhost:8080/tools/og-card.html"
+
+     The two screenshots come from img/, which the site already ships — so
+     this card can never show something the site does not.
+     ═══════════════════════════════════════════════════════════════════ -->
+<style>
+  @page{margin:0}
+  *{box-sizing:border-box;margin:0}
+  body{
+    width:1200px;height:630px;overflow:hidden;position:relative;
+    background:#0F151B;color:#E9EFF4;display:flex;align-items:center;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  .l{width:600px;padding-left:78px;flex:none;position:relative;z-index:2}
+  .brand{display:flex;align-items:center;gap:15px;margin-bottom:30px}
+  .brand .nm{
+    font:600 16px ui-monospace,monospace;letter-spacing:.16em;
+    text-transform:uppercase;color:#93A2B1;
+  }
+  h1{font-size:56px;line-height:1.08;letter-spacing:-.032em;font-weight:700;max-width:12ch}
+  p{margin-top:22px;font-size:24px;line-height:1.45;color:#93A2B1;max-width:23ch}
+  .r{flex:1;position:relative;height:100%}
+  /* Two phones, offset and tilted, so the pair reads as a family at a
+     glance rather than as one screenshot with something behind it. */
+  .ph{
+    position:absolute;width:270px;border-radius:18px;overflow:hidden;
+    border:1px solid #28333E;box-shadow:0 30px 70px -18px rgba(0,0,0,.95);line-height:0;
+  }
+  .ph img{display:block;width:100%;height:auto}
+  .ph.a{top:56px;left:6px;transform:rotate(-5deg);z-index:2}
+  .ph.b{top:118px;left:238px;transform:rotate(5deg);z-index:1}
+  .glow{
+    position:absolute;inset:auto -80px -220px 60px;height:520px;z-index:0;
+    background:radial-gradient(closest-side,rgba(94,168,240,.20),transparent);
+  }
+</style>
+</head>
+<body>
+<div class="l">
+  <div class="brand">
+    <svg width="52" height="52" viewBox="0 0 64 64" aria-hidden="true">
+      <rect width="64" height="64" rx="15" fill="#1B2229"/>
+      <g fill="none" stroke="#5EA8F0" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M13 45 L27 24 L34 33 L41 22 L52 45" stroke-width="3.4"/>
+        <path d="M17 51 L27 36 L34 45" stroke-width="2" opacity=".5"/>
+      </g>
+    </svg>
+    <div class="nm">Free Flight Tools</div>
+  </div>
+  <h1>Small tools for paraglider pilots.</h1>
+  <p>Wind stations on terrain. Swiss HX airspace numbers. Free, and built for one hand.</p>
+</div>
+<div class="r">
+  <div class="glow"></div>
+  <div class="ph a"><img src="../img/windmap.png" alt=""></div>
+  <div class="ph b"><img src="../img/hxcall.png" alt=""></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0F151B">
+<title>Not found — Free Flight Tools</title>
+<link rel="icon" type="image/svg+xml" href="/icon.svg">
+<!-- Long configured widget URLs get truncated when they are pasted into chat
+     apps, which is exactly how these links travel. This page exists to
+     recover the pilot to something that works rather than to apologise. -->
+<style>
+:root{
+  --bg:#FFFFFF;--card:#FFFFFF;--line:#E3E8EE;--fg:#1B2229;--dim:#5F6D7C;--blue:#2472D4;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,"SF Mono","Roboto Mono",Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#0F151B;--card:#171F28;--line:#28333E;--fg:#E9EFF4;--dim:#93A2B1;--blue:#5EA8F0}
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--bg);color:var(--fg);
+  font:400 16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:520px;margin:0 auto;padding:64px 20px}
+.k{font:600 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+h1{margin:14px 0 0;font-size:28px;line-height:1.15;letter-spacing:-.025em;font-weight:700}
+p{margin:12px 0 0;color:var(--dim);font-size:15.5px;line-height:1.55}
+.links{margin-top:26px;display:flex;flex-direction:column;gap:10px}
+.links a{
+  display:block;padding:14px 16px;background:var(--card);border:1px solid var(--line);
+  border-radius:11px;text-decoration:none;color:inherit;font-weight:620;
+}
+.links a small{display:block;font-weight:400;font-size:13.4px;color:var(--dim);margin-top:2px}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px;border-radius:4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="k">404</div>
+  <h1>That page isn&rsquo;t here.</h1>
+  <p>
+    If you followed a link from a chat app it may have been cut short &mdash;
+    setup links are long. Both tools are below.
+  </p>
+  <div class="links">
+    <a href="/xctrack-windmap/">Windmap
+      <small>Wind stations near you, drawn where they actually are.</small></a>
+    <a href="/hx-call/">HX Call
+      <small>The number that says whether a Swiss HX airspace is active.</small></a>
+    <a href="/">Free Flight Tools
+      <small>Everything else.</small></a>
+  </div>
+</div>
+</body>
+</html>

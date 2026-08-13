@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Free Flight Tools">
+  <title>Free Flight Tools</title>
+  <!-- A ridge in contour lines: the one idea both tools share is that a
+       reading belongs to a place. Full bleed — iOS and Android apply their
+       own corner mask, so the rx here is for browser tabs only. -->
+  <rect width="64" height="64" rx="15" fill="#1B2229"/>
+  <g fill="none" stroke="#5EA8F0" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M13 45 L27 24 L34 33 L41 22 L52 45" stroke-width="3.4"/>
+    <path d="M17 51 L27 36 L34 45" stroke-width="2" opacity=".5"/>
+  </g>
+</svg>
