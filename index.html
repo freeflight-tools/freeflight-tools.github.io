@@ -15,7 +15,7 @@
 <meta property="og:image" content="https://freeflight-tools.github.io/img/og-hub.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Windmap and HX Call, two tools for paraglider pilots.">
+<meta property="og:image:alt" content="XCTrack Windmap and HX Call, two tools for paraglider pilots.">
 <meta name="twitter:card" content="summary_large_image">
 
 <link rel="icon" type="image/svg+xml" href="icon.svg">
@@ -24,48 +24,63 @@
 <!-- ══════════════════════════════════════════════════════════════════════
      No build step, no dependencies, one file. Same rule as both tools it
      links to: this has to be readable and editable by whoever picks it up
-     next, and it must never become the reason a page fails to load.
+     next, and it must never be the reason a page fails to load.
 
-     AUTOMATIC TRANSLATION goes in the marked slot at the bottom of <body>,
-     and ONLY on this page and the two setup pages. Never on app.html or
-     widget.html in either repo: those are read in the air, HX Call's whole
-     point is working with no signal, and a third-party script would put a
-     network dependency inside that guarantee. Aviation English is also the
-     right language for the readings themselves.
+     SCREENSHOTS COME IN PAIRS. Each <picture> carries a light and a dark
+     capture and swaps on prefers-color-scheme. The light shots were
+     pinned deliberately (see tools/og-card.html in each repo), so on a
+     dark page they used to sit there as glaring white rectangles. Both
+     files are generated from the same two commands with theme=light and
+     theme=dark; keep them regenerated together or the page will show one
+     tool in the wrong mode.
+
+     AUTOMATIC TRANSLATION goes in the marked slot at the bottom of
+     <body>, and only on this page plus the two setup pages. Never on
+     app.html or widget.html in either repo: those are read in the air,
+     HX Call exists to work with no signal, and a third-party script
+     would put a network dependency inside that guarantee.
      ═══════════════════════════════════════════════════════════════════ -->
 <style>
 :root{
   --bg:#FFFFFF;
-  --bg-alt:#F6F8FA;
+  --bg-alt:#F5F7FA;
   --card:#FFFFFF;
-  --line:#E3E8EE;
+  --line:#E1E7ED;
   --line-soft:#EDF1F5;
-  --fg:#1B2229;
-  --dim:#5F6D7C;
-  --blue:#2472D4;
-  --blue-soft:#EAF2FD;
+  --fg:#161C23;
+  --dim:#5C6A79;
+  --blue:#1F6FD0;
+  --blue-soft:#E9F1FC;
+  --sun:#C2680A;
+  --sun-soft:#FDF1E3;
   --amber:#B26A08;
   --amber-soft:#FDF4E5;
   --amber-line:#F0DCB8;
-  --shadow:0 1px 2px rgba(27,34,41,.05), 0 6px 18px -8px rgba(27,34,41,.14);
+  --ridge:#DCE5EE;
+  --shadow:0 1px 2px rgba(22,28,35,.05), 0 8px 22px -10px rgba(22,28,35,.18);
+  --shadow-lg:0 2px 4px rgba(22,28,35,.06), 0 22px 44px -20px rgba(22,28,35,.26);
   --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   --mono:ui-monospace,"SF Mono","Roboto Mono",Menlo,monospace;
 }
 @media (prefers-color-scheme:dark){
   :root{
-    --bg:#0F151B;
-    --bg-alt:#151D25;
-    --card:#171F28;
-    --line:#28333E;
-    --line-soft:#202A34;
+    --bg:#0C1218;
+    --bg-alt:#131B23;
+    --card:#161E27;
+    --line:#26313C;
+    --line-soft:#1D262F;
     --fg:#E9EFF4;
-    --dim:#93A2B1;
+    --dim:#8FA0B0;
     --blue:#5EA8F0;
-    --blue-soft:#152838;
+    --blue-soft:#132639;
+    --sun:#F0A24A;
+    --sun-soft:#241A0C;
     --amber:#E9A33C;
     --amber-soft:#241A0B;
     --amber-line:#3D2C10;
-    --shadow:0 1px 2px rgba(0,0,0,.4), 0 6px 18px -8px rgba(0,0,0,.6);
+    --ridge:#1B242E;
+    --shadow:0 1px 2px rgba(0,0,0,.5), 0 8px 22px -10px rgba(0,0,0,.7);
+    --shadow-lg:0 2px 4px rgba(0,0,0,.5), 0 22px 44px -20px rgba(0,0,0,.85);
   }
 }
 
@@ -74,58 +89,84 @@ body{
   margin:0;background:var(--bg);color:var(--fg);
   font:400 16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;
 }
-.wrap{max-width:660px;margin:0 auto;padding:0 20px 60px}
+.wrap{max-width:680px;margin:0 auto;padding:0 20px 64px}
 
-header{padding:44px 0 6px}
+/* ── hero ───────────────────────────────────────────────────────────
+   The ridge sits behind the headline rather than beside it, so the page
+   opens on terrain. It is the same shape as the icon, drawn wide. */
+.hero{position:relative;padding:46px 0 34px;overflow:hidden}
+.hero .ridge{
+  position:absolute;left:-8%;right:-8%;bottom:0;height:210px;z-index:0;
+  pointer-events:none;
+}
+.hero > *:not(.ridge){position:relative;z-index:1}
 .brand{display:flex;align-items:center;gap:11px}
 .brand .nm{
-  font:600 12px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--dim);
+  font:600 12px/1 var(--mono);letter-spacing:.15em;text-transform:uppercase;color:var(--dim);
 }
-h1{margin:20px 0 0;font-size:clamp(27px,5.4vw,36px);line-height:1.12;letter-spacing:-.028em;font-weight:700;text-wrap:balance}
-header p{margin:13px 0 0;font-size:16.5px;line-height:1.55;color:var(--dim)}
-header p b{color:var(--fg);font-weight:600}
+h1{
+  margin:24px 0 0;font-size:clamp(31px,6.4vw,44px);line-height:1.06;
+  letter-spacing:-.033em;font-weight:750;text-wrap:balance;max-width:15ch;
+}
+.hero p{margin:15px 0 0;font-size:17px;line-height:1.55;color:var(--dim);max-width:46ch}
+.hero p b{color:var(--fg);font-weight:600}
 
 h2{
-  margin:44px 0 12px;font:600 11px/1 var(--mono);letter-spacing:.13em;
+  margin:40px 0 14px;font:600 11px/1 var(--mono);letter-spacing:.14em;
   text-transform:uppercase;color:var(--dim);
 }
 
-/* ── tool cards ─────────────────────────────────────────────────── */
+/* ── tool cards ─────────────────────────────────────────────────────
+   Each tool owns a colour: Windmap the amber of its own arrow, HX Call
+   the blue of its handset. The stripe is the only place either colour
+   is used decoratively, which is what keeps the pair distinguishable at
+   a glance without turning the page into a paint chart. */
 .card{
-  display:block;text-decoration:none;color:inherit;margin-bottom:16px;
-  background:var(--card);border:1px solid var(--line);border-radius:13px;
-  overflow:hidden;box-shadow:var(--shadow);
+  display:block;text-decoration:none;color:inherit;margin-bottom:18px;
+  background:var(--card);border:1px solid var(--line);border-radius:14px;
+  overflow:hidden;box-shadow:var(--shadow);position:relative;
 }
-.card .hd{display:flex;align-items:center;gap:12px;padding:16px 16px 12px}
-.card .hd .nm{flex:1;font-size:18px;font-weight:680;letter-spacing:-.018em}
-.card .hd .go{font-size:14px;font-weight:650;color:var(--blue);flex:none}
-.card .ds{margin:0;padding:0 16px 14px;font-size:14.4px;line-height:1.5;color:var(--dim)}
+.card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;z-index:2}
+.card.wm::before{background:linear-gradient(90deg,#EFCB1F,#EE8A1C)}
+.card.hx::before{background:linear-gradient(90deg,#5EA8F0,#1F6FD0)}
+.card .hd{display:flex;align-items:center;gap:13px;padding:18px 17px 12px}
+.card .hd .nm{flex:1;font-size:19px;font-weight:700;letter-spacing:-.02em}
+.card .hd .go{
+  font-size:13px;font-weight:650;flex:none;padding:7px 12px;border-radius:20px;
+  background:var(--bg-alt);
+}
+.card.wm .hd .go{color:var(--sun)}
+.card.hx .hd .go{color:var(--blue)}
+.card .ds{margin:0;padding:0 17px 15px;font-size:14.6px;line-height:1.52;color:var(--dim)}
+.card .ds b{color:var(--fg);font-weight:600}
 .card .shot{
-  border-top:1px solid var(--line-soft);max-height:210px;overflow:hidden;
+  border-top:1px solid var(--line-soft);max-height:222px;overflow:hidden;
   background:var(--bg-alt);line-height:0;
 }
 .card .shot img{display:block;width:100%;height:auto}
-.card .ft{
-  display:flex;flex-wrap:wrap;gap:6px;padding:12px 16px;
-  border-top:1px solid var(--line-soft);
-}
+.card .ft{display:flex;flex-wrap:wrap;gap:6px;padding:13px 17px;border-top:1px solid var(--line-soft)}
 .chip{
   font:600 10px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;
-  padding:6px 8px;border-radius:20px;background:var(--bg-alt);color:var(--dim);
+  padding:6px 9px;border-radius:20px;background:var(--bg-alt);color:var(--dim);
 }
-.chip.on{background:var(--blue-soft);color:var(--blue)}
+.card.wm .chip.on{background:var(--sun-soft);color:var(--sun)}
+.card.hx .chip.on{background:var(--blue-soft);color:var(--blue)}
 
-/* ── plain blocks ───────────────────────────────────────────────── */
-.made{margin:0;padding:0;list-style:none}
-.made li{
-  padding:11px 0;border-bottom:1px solid var(--line-soft);
-  font-size:14.4px;line-height:1.5;color:var(--dim);
+/* ── made for ───────────────────────────────────────────────────── */
+.made{
+  margin:0;padding:0;list-style:none;
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(184px,1fr));gap:14px;
 }
-.made li:last-child{border-bottom:0}
-.made b{color:var(--fg);font-weight:620}
+.made li{
+  padding:16px;background:var(--bg-alt);border:1px solid var(--line-soft);
+  border-radius:12px;font-size:13.6px;line-height:1.5;color:var(--dim);
+}
+.made svg{display:block;margin-bottom:10px}
+.made b{display:block;color:var(--fg);font-size:14.4px;font-weight:650;margin-bottom:4px}
+
 .note{
-  padding:13px 15px;border-radius:10px;background:var(--bg-alt);
-  border:1px solid var(--line-soft);font-size:14px;line-height:1.55;color:var(--dim);
+  padding:14px 16px;border-radius:12px;background:var(--bg-alt);
+  border:1px solid var(--line-soft);font-size:14.2px;line-height:1.55;color:var(--dim);
 }
 .note b{color:var(--fg)}
 .note.warn{background:var(--amber-soft);border-color:var(--amber-line);color:var(--amber)}
@@ -133,15 +174,17 @@ h2{
 .note + .note{margin-top:10px}
 
 footer{
-  margin-top:40px;padding-top:18px;border-top:1px solid var(--line);
+  margin-top:42px;padding-top:20px;border-top:1px solid var(--line);
   font-size:13.4px;line-height:1.65;color:var(--dim);
 }
 a{color:var(--blue)}
-:focus-visible{outline:2px solid var(--blue);outline-offset:2px;border-radius:4px}
-.card:active{background:var(--bg-alt)}
+:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:5px}
+.card:active{border-color:var(--dim)}
 @media (hover:hover) and (pointer:fine){
-  .card{transition:border-color .12s,transform .12s}
-  .card:hover{border-color:var(--blue)}
+  .card{transition:box-shadow .15s,border-color .15s}
+  .card:hover{box-shadow:var(--shadow-lg)}
+  .card.wm:hover{border-color:#EE8A1C}
+  .card.hx:hover{border-color:var(--blue)}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
@@ -149,10 +192,17 @@ a{color:var(--blue)}
 <body>
 <div class="wrap">
 
-<header>
+<header class="hero">
+  <svg class="ridge" viewBox="0 0 900 210" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0,176 L118,96 L186,132 L268,58 L352,138 L430,86 L520,152 L604,66 L700,140 L790,104 L900,158 L900,210 L0,210 Z"
+          fill="var(--ridge)" opacity=".55"/>
+    <path d="M0,196 L96,140 L172,166 L262,116 L344,170 L438,128 L528,180 L622,118 L716,172 L812,146 L900,186 L900,210 L0,210 Z"
+          fill="var(--ridge)"/>
+  </svg>
+
   <div class="brand">
     <svg width="30" height="30" viewBox="0 0 64 64" role="img" aria-label="Free Flight Tools">
-      <rect width="64" height="64" rx="15" fill="#1B2229"/>
+      <rect width="64" height="64" rx="15" fill="#161C23"/>
       <g fill="none" stroke="#5EA8F0" stroke-linecap="round" stroke-linejoin="round">
         <path d="M13 45 L27 24 L34 33 L41 22 L52 45" stroke-width="3.4"/>
         <path d="M17 51 L27 36 L34 45" stroke-width="2" opacity=".5"/>
@@ -164,34 +214,39 @@ a{color:var(--blue)}
   <h1>Small tools for paraglider pilots.</h1>
   <p>
     Free, no account, nothing tracked. They run inside <b>XCTrack</b> as a web
-    page widget, or in any browser on their own.
+    page widget, or on their own in any browser.
   </p>
 </header>
 
-<h2>Two tools</h2>
+<h2>The tools</h2>
 
 <!-- Windmap first: it works anywhere, needs no setup, and is the one that
      shows a stranger what these are in a single tap. -->
-<a class="card" href="https://freeflight-tools.github.io/xctrack-windmap/">
+<a class="card wm" href="https://freeflight-tools.github.io/xctrack-windmap/">
   <div class="hd">
     <svg width="34" height="34" viewBox="0 0 64 64" style="flex:none" aria-hidden="true">
-      <rect width="64" height="64" rx="15" fill="#1B2229"/>
+      <rect width="64" height="64" rx="15" fill="#161C23"/>
       <g transform="translate(32 32) rotate(35)" stroke-linejoin="round" stroke-linecap="round">
         <path d="M0,-11.75 L9,11.75 L0,4.75 L-9,11.75 Z" fill="none" stroke="#FFF" stroke-width="11"/>
-        <path d="M0,-11.75 L9,11.75 L0,4.75 L-9,11.75 Z" fill="none" stroke="#1B2229" stroke-width="8.5"/>
+        <path d="M0,-11.75 L9,11.75 L0,4.75 L-9,11.75 Z" fill="none" stroke="#161C23" stroke-width="8.5"/>
         <path d="M0,-11.75 L9,11.75 L0,4.75 L-9,11.75 Z" fill="none" stroke="#EE8A1C" stroke-width="5"/>
         <path d="M0,-11.75 L9,11.75 L0,4.75 L-9,11.75 Z" fill="#EFCB1F" stroke="#3A4750" stroke-width="1"/>
       </g>
     </svg>
     <div class="nm">XCTrack Windmap</div>
-    <div class="go">Open &rarr;</div>
+    <div class="go">Open</div>
   </div>
   <p class="ds">
-    Wind stations near you, drawn where they actually are. Speed, gust and
-    direction for each one &mdash; so you can tell a valley-floor reading from a
-    summit reading before you commit to a glide.
+    Wind stations near you, drawn <b>where they actually are</b>. Speed, gust and
+    direction for each one, so you can tell a valley-floor reading from a summit
+    reading before you commit to a glide.
   </p>
-  <div class="shot"><img src="img/windmap.png" alt="Windmap listing nearby stations with speed, gust, altitude and direction." width="520" height="668" loading="lazy"></div>
+  <div class="shot">
+    <picture>
+      <source srcset="img/windmap-dark.png" media="(prefers-color-scheme: dark)">
+      <img src="img/windmap.png" alt="Windmap listing nearby stations with speed, gust, altitude and direction." width="520" height="668" loading="lazy">
+    </picture>
+  </div>
   <div class="ft">
     <span class="chip on">Live readings</span>
     <span class="chip">13 station networks</span>
@@ -199,10 +254,10 @@ a{color:var(--blue)}
   </div>
 </a>
 
-<a class="card" href="https://freeflight-tools.github.io/hx-call/">
+<a class="card hx" href="https://freeflight-tools.github.io/hx-call/">
   <div class="hd">
     <svg width="34" height="34" viewBox="0 0 64 64" style="flex:none" aria-hidden="true">
-      <rect width="64" height="64" rx="15" fill="#1B2229"/>
+      <rect width="64" height="64" rx="15" fill="#161C23"/>
       <path d="M4 46 L20 27 L28 36 L40 21 L60 46 Z" fill="#2A3F52"/>
       <g transform="translate(32 25) rotate(-32) scale(.30)" fill="#5EA8F0">
         <rect x="-96" y="-24" width="192" height="48" rx="24"/>
@@ -211,14 +266,19 @@ a{color:var(--blue)}
       </g>
     </svg>
     <div class="nm">HX Call</div>
-    <div class="go">Open &rarr;</div>
+    <div class="go">Open</div>
   </div>
   <p class="ds">
-    Swiss <b>HX</b> airspaces have no fixed hours &mdash; they can switch on at 30
-    minutes&rsquo; notice. You are allowed to check by phone, and this finds the
+    Swiss <b>HX</b> airspaces have no fixed hours. They can switch on at 30
+    minutes&rsquo; notice, you are allowed to check by phone, and this finds the
     right number for wherever you are.
   </p>
-  <div class="shot"><img src="img/hxcall.png" alt="HX Call showing the nearest Swiss HX airspaces and their phone numbers." width="520" height="668" loading="lazy"></div>
+  <div class="shot">
+    <picture>
+      <source srcset="img/hxcall-dark.png" media="(prefers-color-scheme: dark)">
+      <img src="img/hxcall.png" alt="HX Call showing the nearest Swiss HX airspaces and their phone numbers." width="520" height="668" loading="lazy">
+    </picture>
+  </div>
   <div class="ft">
     <span class="chip on">Works offline</span>
     <span class="chip">13 zones</span>
@@ -228,23 +288,33 @@ a{color:var(--blue)}
 
 <h2>Made for</h2>
 <ul class="made">
-  <li><b>One hand, in gloves.</b> Big targets, no menus, and nothing to scroll
-    past to reach what you opened it for.</li>
-  <li><b>Bright sunlight.</b> High contrast, and every colour has a number printed
-    beside it &mdash; colour is never the only thing carrying the reading.</li>
-  <li><b>A battery that has to last the flight.</b> Nothing polls faster than the
-    data actually changes.</li>
+  <li>
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 13V5a1.6 1.6 0 013.2 0v6"/><path d="M11.2 11V4a1.6 1.6 0 013.2 0v7"/><path d="M14.4 11.5V6a1.6 1.6 0 013.2 0v9a6 6 0 01-6 6h-1a5 5 0 01-4.2-2.3L4 15.5a1.7 1.7 0 012.7-2L8 15"/></svg>
+    <b>One hand, in gloves</b>
+    Big targets, no menus, and nothing to scroll past to reach what you opened it for.
+  </li>
+  <li>
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--sun)" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8"/></svg>
+    <b>Bright sunlight</b>
+    High contrast, and every colour has a number printed beside it. Colour is never
+    the only thing carrying a reading.
+  </li>
+  <li>
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l18 18"/><path d="M5.5 10.5A9 9 0 0110 8.2M18.5 10.5a9 9 0 00-4-2.2"/><path d="M8.6 14a5 5 0 013-1.4M15.4 14a5 5 0 00-1.6-1.1"/><circle cx="12" cy="18" r="1"/></svg>
+    <b>A battery that has to last</b>
+    Nothing polls faster than the data actually changes.
+  </li>
 </ul>
 
 <h2>Your position</h2>
 <p class="note">
-  <b>Stays on your phone.</b> Windmap asks winds.mobi which stations are in the
-  area around you, and that is the only thing either tool ever sends. No
-  accounts, no analytics, no tracking.
+  <b>It stays on your phone.</b> Windmap asks winds.mobi which stations are in the
+  area around you, and that is the only thing either tool ever sends. No accounts,
+  no analytics, no tracking.
 </p>
 
-<p class="note warn" style="margin-top:10px">
-  <b>Unofficial, and no warranty.</b> These show measured facts &mdash; not
+<p class="note warn">
+  <b>Unofficial, and no warranty.</b> These show measured facts. They are not
   forecasts, and never a verdict on whether a flight is safe. Only the official
   publications have legal validity, and you are responsible for your own flight
   preparation.
@@ -252,8 +322,8 @@ a{color:var(--blue)}
 
 <footer>
   Built by a paraglider pilot, for paraglider pilots.
-  <a href="https://github.com/freeflight-tools">Source and issues on GitHub</a> &mdash;
-  every tool is a handful of static files with no dependencies and no build step.
+  <a href="https://github.com/freeflight-tools">Source and issues on GitHub</a>.
+  Every tool is a handful of static files with no dependencies and no build step.
 </footer>
 
 </div>
@@ -262,7 +332,7 @@ a{color:var(--blue)}
      Drop the provider's snippet here, not in <head>: it must never block
      the first paint, and if it fails to load the page has to stay fully
      readable in English. Add `defer` if the provider allows it.
-     This page and the two setup pages ONLY. See the note at the top.
+     This page and the two setup pages only. See the note at the top.
      ═══════════════════════════════════════════════════════════════════ -->
 
 </body>

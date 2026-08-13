@@ -12,7 +12,7 @@ pilots. Live at **[freeflight-tools.github.io](https://freeflight-tools.github.i
 
     index.html      the whole site
     404.html        recovers a truncated link to a working tool
-    icon.svg        the family mark — a ridge in contour lines
+    icon.svg        the family mark, a ridge in contour lines
     img/            screenshots and the social preview cards
     tools/og-card.html   regenerates img/og-hub.png
 
@@ -32,7 +32,7 @@ then:
           --window-size=1200,630 --screenshot=img/og-hub.png \
           "http://localhost:8080/tools/og-card.html"
 
-The screenshots in `img/` are captured from the running apps — see
+The screenshots in `img/` are captured from the running apps. See
 `tools/og-card.html` in each tool's repo for those two commands, including the
 note about picking a moment when the readings are fresh.
 
@@ -41,7 +41,7 @@ note about picking a moment when the readings are fresh.
 English is the source language and stays that way in the apps themselves:
 readings are read in the air, and aviation English is the right register for
 them. This page and the two setup pages carry an automatic translation widget
-instead — the slot for it is marked at the bottom of `index.html`.
+instead. The slot for it is marked at the bottom of `index.html`.
 
 It must never be added to `app.html` or `widget.html` in either tool. HX Call's
 whole point is working with no data connection, and a third-party script would
