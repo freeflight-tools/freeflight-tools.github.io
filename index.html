@@ -53,7 +53,7 @@
      AUTOMATIC TRANSLATION goes in the marked slot at the bottom of
      <body>, and only on this page plus the two setup pages. Never on
      app.html or widget.html in either repo: those are read in the air,
-     HX Call exists to work with no signal, and a third-party script
+     HX Call exists to work with no data connection, and a third-party
      would put a network dependency inside that guarantee.
      ═══════════════════════════════════════════════════════════════════ -->
 <style>
@@ -367,7 +367,10 @@ footer a{color:#7FB6EE}
         the right number for wherever you are.
       </p>
       <ul class="pts">
-        <li><b>Works with no signal</b>, which is the whole point of it</li>
+        <!-- Not "works with no signal": the tool's whole purpose is placing a
+             call, so it needs signal for that. What it does not need is a
+             DATA connection, and the distinction is the honest one. -->
+        <li>Needs <b>no data connection</b>, only enough signal to dial</li>
         <li>13 zones, and the ones with <b>no number yet</b> are still listed</li>
         <li>A <b>re-check clock</b> per zone, because one call is not enough</li>
       </ul>
@@ -439,7 +442,7 @@ footer a{color:#7FB6EE}
 <!-- ══ AUTOMATIC TRANSLATION ═══════════════════════════════════════════
      GTranslate, on this page and the two setup pages ONLY. Never on
      app.html or widget.html in either tool repo: those are read in the
-     air, HX Call exists to work with no signal, and a third-party script
+     air, HX Call exists to work with no data connection, and a third-party
      would put a network dependency inside that guarantee.
 
      At the end of <body> and `defer`red, so it cannot block the first

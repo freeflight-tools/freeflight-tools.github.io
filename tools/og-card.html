@@ -14,42 +14,72 @@
              --window-size=1200,630 --screenshot=img/og-hub.png \
              "http://localhost:8080/tools/og-card.html"
 
-     The two screenshots come from img/, which the site already ships, so
-     this card can never show something the site does not.
+     THE PHONES ARE THE SITE'S OWN FILES, so this card can never show
+     something the site does not. They are the widget-in-flight captures,
+     not the standalone list pages: at 270px wide a list of rows is a grey
+     smear, while terrain with arrows on it survives the size. That is the
+     test for anything put here. A card is read at a glance, in a chat, at
+     whatever size the client picks.
+
+     NO FRAME OF OURS. The captures bring their own device frame and a
+     transparent surround, so a border, a radius and overflow:hidden would
+     draw a second frame inside the first. A drop-shadow filter follows the
+     real silhouette; box-shadow would draw the shadow of the bounding box.
+
+     THIS FILE IS THE ONLY COPY OF THE CARD. The png is a render, so if the
+     wording changes here it does not reach anybody until the command above
+     is run again and the png is committed. The previous render sat for
+     months showing "WINDGRADE", a product name dropped in the rename.
      ═══════════════════════════════════════════════════════════════════ -->
 <style>
   @page{margin:0}
   *{box-sizing:border-box;margin:0}
   body{
     width:1200px;height:630px;overflow:hidden;position:relative;
-    background:#0F151B;color:#E9EFF4;display:flex;align-items:center;
+    background:#0B1218;color:#EAF1F7;display:flex;align-items:center;
     font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   }
-  .l{width:600px;padding-left:78px;flex:none;position:relative;z-index:2}
-  .brand{display:flex;align-items:center;gap:15px;margin-bottom:30px}
+  /* the ridge from the site's hero, so the card and the page it opens
+     share a horizon */
+  .ridge{position:absolute;left:-4%;width:108%;bottom:-1px;height:250px;z-index:0}
+
+  .l{width:620px;padding-left:76px;flex:none;position:relative;z-index:2}
+  .brand{display:flex;align-items:center;gap:15px;margin-bottom:34px}
   .brand .nm{
     font:600 16px ui-monospace,monospace;letter-spacing:.16em;
-    text-transform:uppercase;color:#93A2B1;
+    text-transform:uppercase;color:#8CA3B7;
   }
-  h1{font-size:56px;line-height:1.08;letter-spacing:-.032em;font-weight:700;max-width:12ch}
-  p{margin-top:22px;font-size:24px;line-height:1.45;color:#93A2B1;max-width:23ch}
+  h1{font-size:58px;line-height:1.04;letter-spacing:-.034em;font-weight:730;max-width:13ch}
+  h1 em{font-style:normal}
+  h1 .w{color:#F0A24A}
+  h1 .a{color:#6DB0F2}
+  p{margin-top:24px;font-size:23px;line-height:1.42;color:#A9BCCD;max-width:25ch}
+
   .r{flex:1;position:relative;height:100%}
-  /* Two phones, offset and tilted, so the pair reads as a family at a
-     glance rather than as one screenshot with something behind it. */
-  .ph{
-    position:absolute;width:270px;border-radius:18px;overflow:hidden;
-    border:1px solid #28333E;box-shadow:0 30px 70px -18px rgba(0,0,0,.95);line-height:0;
-  }
-  .ph img{display:block;width:100%;height:auto}
-  .ph.a{top:56px;left:6px;transform:rotate(-5deg);z-index:2}
-  .ph.b{top:118px;left:238px;transform:rotate(5deg);z-index:1}
   .glow{
-    position:absolute;inset:auto -80px -220px 60px;height:520px;z-index:0;
-    background:radial-gradient(closest-side,rgba(94,168,240,.20),transparent);
+    position:absolute;inset:auto -60px -240px 40px;height:560px;z-index:0;
+    background:radial-gradient(closest-side,rgba(94,168,240,.22),transparent);
   }
+  /* Two phones, offset and tilted, so the pair reads as a family at a
+     glance rather than as one screenshot with something behind it.
+     Windmap in front: terrain and arrows carry further than chips do. */
+  .ph{position:absolute;width:248px;line-height:0;filter:drop-shadow(0 30px 52px rgba(0,0,0,.85))}
+  .ph img{display:block;width:100%;height:auto}
+  /* Sized and placed so HX Call's chips clear the bottom edge: they sit in
+     the last 15% of that capture, and at the first framing the bleed ate
+     them, which left the second phone contributing nothing but a shape. */
+  .ph.a{top:74px;left:16px;transform:rotate(-5deg);z-index:2}
+  .ph.b{top:104px;left:238px;transform:rotate(5deg);z-index:1}
 </style>
 </head>
 <body>
+<svg class="ridge" viewBox="0 0 900 250" preserveAspectRatio="none" aria-hidden="true">
+  <path d="M0,206 L118,112 L186,154 L268,66 L352,162 L430,102 L520,180 L604,78 L700,164 L790,120 L900,186 L900,250 L0,250 Z"
+        fill="#16222D" opacity=".85"/>
+  <path d="M0,230 L96,164 L172,196 L262,136 L344,200 L438,150 L528,214 L622,138 L716,202 L812,172 L900,220 L900,250 L0,250 Z"
+        fill="#1D2C39"/>
+</svg>
+
 <div class="l">
   <div class="brand">
     <svg width="52" height="52" viewBox="0 0 64 64" aria-hidden="true">
@@ -61,13 +91,14 @@
     </svg>
     <div class="nm">Free Flight Tools</div>
   </div>
-  <h1>Small tools for paraglider pilots.</h1>
-  <p>Wind stations on terrain. Swiss HX airspace numbers. Free, and built for one hand.</p>
+  <h1><em class="w">Wind</em> and <em class="a">airspace</em>, on the screen you already fly with.</h1>
+  <p>Two small tools for cross-country paraglider pilots. Free, and built for one hand.</p>
 </div>
+
 <div class="r">
   <div class="glow"></div>
-  <div class="ph a"><img src="../img/windmap.png" alt=""></div>
-  <div class="ph b"><img src="../img/hxcall.png" alt=""></div>
+  <div class="ph a"><img src="../img/windmap-widget.png" alt=""></div>
+  <div class="ph b"><img src="../img/hxcall-widget.png" alt=""></div>
 </div>
 </body>
 </html>

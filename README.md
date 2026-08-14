@@ -6,7 +6,7 @@ pilots. Live at **[freeflight-tools.github.io](https://freeflight-tools.github.i
 | | |
 |---|---|
 | **[Windmap](https://github.com/freeflight-tools/xctrack-windmap)** | Wind stations near you, drawn where they actually are. An XCTrack overlay plus a standalone list. |
-| **[HX Call](https://github.com/freeflight-tools/hx-call)** | The phone number that says whether a Swiss HX airspace is active. Works with no signal. |
+| **[HX Call](https://github.com/freeflight-tools/hx-call)** | The phone number that says whether a Swiss HX airspace is active. Needs no data connection, only enough signal to dial. |
 
 ## What's in here
 
