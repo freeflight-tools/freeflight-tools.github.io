@@ -15,7 +15,7 @@ pilots. Live at **[freeflight-tools.github.io](https://freeflight-tools.github.i
     icon.svg        the family mark, a ridge in contour lines
     img/            screenshots and the social preview cards
     img/screenshots/     the full-resolution masters the web files come from
-    tools/og-card.html   regenerates img/og-hub.png
+    tools/og-card.html   regenerates img/og-hub.jpg
 
 One file, no dependencies, no build step, same as the tools it links to.
 
@@ -30,8 +30,15 @@ then:
 
     CH="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
     "$CH" --headless=new --virtual-time-budget=5000 \
-          --window-size=1200,630 --screenshot=img/og-hub.png \
+          --window-size=1200,630 --screenshot=/tmp/og-hub.png \
           "http://localhost:8080/tools/og-card.html"
+    magick /tmp/og-hub.png -quality 86 -strip img/og-hub.jpg
+
+**Both commands.** The card carries two full-colour terrain photographs, which
+put the png at 500 KB against ~130 KB for the two tool cards. WhatsApp is where
+these links get pasted and is the strictest client about preview size. JPEG q86
+is 117 KB and identical at the size a client renders it; quantising the png made
+it *larger*, because the dither noise defeats png's compression.
 
 ## Regenerating the tool screenshots
 

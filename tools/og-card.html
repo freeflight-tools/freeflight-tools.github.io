@@ -4,15 +4,24 @@
 <meta charset="utf-8">
 <title>Free Flight Tools: social preview card</title>
 <!-- ══════════════════════════════════════════════════════════════════════
-     Generates img/og-hub.png, the 1200x630 image chat apps show when this
+     Generates img/og-hub.jpg, the 1200x630 image chat apps show when this
      site's link is pasted. Build-time only.
 
      Serve the repo root, then:
 
        CH="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
        "$CH" --headless=new --virtual-time-budget=5000 \
-             --window-size=1200,630 --screenshot=img/og-hub.png \
+             --window-size=1200,630 --screenshot=/tmp/og-hub.png \
              "http://localhost:8080/tools/og-card.html"
+       magick /tmp/og-hub.png -quality 86 -strip img/og-hub.jpg
+
+     JPEG, NOT PNG, AND THE SECOND COMMAND IS NOT OPTIONAL. Two full-colour
+     terrain photographs put the png at 500 KB, where the two tool cards are
+     ~130 KB of flat UI. WhatsApp is the distribution channel for these links
+     and is the strictest client about preview size, so the card has to stay
+     small. Quantising made it WORSE, 580-650 KB: the dither noise defeats
+     png's compression. JPEG q86 is 117 KB and identical at the size any
+     client renders it. There is no transparency here to lose.
 
      THE PHONES ARE THE SITE'S OWN FILES, so this card can never show
      something the site does not. They are the widget-in-flight captures,
