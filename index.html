@@ -319,8 +319,15 @@ footer a{color:#7FB6EE}
             <path d="M0,-13 L10,13 L0,5.2 L-10,13 Z" fill="currentColor" stroke="currentColor" stroke-width="6"/>
           </g>
         </svg>
-        Wind
+        Live wind station readings
       </p>
+      <!-- Not "tracker". The word collides twice on this very page: the hero
+           promises "nothing tracked", and the host app is XCTrack — so a
+           "wind tracker" reads as something logging the pilot, which is the
+           one thing both tools refuse to do. "Station readings" also carries
+           the real difference from the forecast apps: these are measurements
+           from instruments, not a model. "Live" is fair against a forecast and
+           is qualified by the third bullet, which says old readings go red. -->
       <h2 class="notranslate" translate="no">XCTrack Windmap</h2>
       <p class="lede">
         Wind stations near you, drawn <b>where they actually are</b>. Speed, gust
@@ -328,7 +335,10 @@ footer a{color:#7FB6EE}
         summit reading before you commit to a glide.
       </p>
       <ul class="pts">
-        <li><b>Live readings</b> from 13 station networks across the Alps</li>
+        <!-- was "Live readings from 13 station networks": once the eyebrow says
+             LIVE WIND STATION READINGS the first three words are an echo, and
+             the bullet's own fact is the network count. -->
+        <li><b>13 station networks</b> across the Alps</li>
         <li>Tap any arrow for the <b>last few hours</b> at that station</li>
         <li>Old readings <b>go red</b> rather than quietly looking current</li>
       </ul>
@@ -353,26 +363,61 @@ footer a{color:#7FB6EE}
     <div class="txt">
       <p class="eyebrow">
         <svg width="17" height="17" viewBox="0 0 64 64" aria-hidden="true">
-          <g transform="translate(32 32) rotate(-32) scale(.34)" fill="currentColor">
+          <!-- the trailing `translate(0 -24)` is load-bearing: the handset's own
+               bounding box is 248x96 centred on (0,24), NOT on the origin, so
+               rotating it about the origin threw it off-viewBox. At scale .34 it
+               ran x -8.1..80.7 and y 2.7..75.1 in a 0 0 64 64 box and was clipped
+               left, right and bottom. Centre first, then rotate: .19 leaves the
+               rotated glyph 49.6 x 40.4, spanning x 7.2..56.8 and y 11.8..52.2.
+               Sized against the wind arrow's mass, not to fill the box. -->
+          <g transform="translate(32 32) rotate(-32) scale(.19) translate(0 -24)" fill="currentColor">
             <rect x="-96" y="-24" width="192" height="48" rx="24"/>
             <rect x="-124" y="-24" width="66" height="96" rx="30"/>
             <rect x="58" y="-24" width="66" height="96" rx="30"/>
           </g>
         </svg>
-        Airspace
+        HX airspace phone directory
       </p>
+      <!-- Not "Airspace status" or "Airspace checker", both of which promise
+           something the tool does not do: it does not know whether an HX is
+           active, it finds you the number to ask. "Phone directory" is the
+           honest description, and it is what stops a reader having to reach
+           the lede to learn what HX Call is for.
+           It is a long kicker: the text run measures 252px, which still fits
+           one line inside the 276px a 320px phone leaves after .inner's 22px
+           padding, so it never wraps. The cost is rhythm, not fit. It is
+           ~2.2x the width of the `HX Call` heading it introduces. -->
       <h2 class="notranslate" translate="no">HX Call</h2>
       <p class="lede">
         Swiss <b>HX</b> airspaces have no fixed hours. They can switch on at 30
-        minutes&rsquo; notice, you are allowed to check by phone, and this finds
-        the right number for wherever you are.
+        minutes&rsquo; notice, and where one publishes a number you are allowed
+        to check its status by phone. This finds the right number for wherever
+        you are.
       </p>
+      <!-- "you are allowed to check by phone" full stop was an over-claim. The
+           permission is general (VFR RAC 4-0-0-1 §0.2.2) but the numbers are
+           not: 8 of the 13 zones publish one, 5 do not. Counted from
+           hx-call/hx/data.js on 2026-08-16 — Payerne, Dübendorf, Lugano,
+           St. Gallen and Les Eplatures have no `p:`. -->
       <ul class="pts">
         <!-- Not "works with no signal": the tool's whole purpose is placing a
              call, so it needs signal for that. What it does not need is a
              DATA connection, and the distinction is the honest one. -->
+        <!-- First, because it is the one thing that separates this tool from
+             its own widget: a phone directory needs no map and no overlay, so
+             the plain app IS the whole product. That makes it the only version
+             available to a pilot on iOS, or to anyone who does not fly with
+             XCTrack. Windmap's list cannot claim the same: without a map it
+             loses the point of Windmap. -->
+        <li><b>No XCTrack needed</b>: the app runs in any browser, iPhone included</li>
         <li>Needs <b>no data connection</b>, only enough signal to dial</li>
-        <li>13 zones, and the ones with <b>no number yet</b> are still listed</li>
+        <!-- WAS: "13 zones, and the ones with no number yet are still listed",
+             which is false in the shipped default. hx-call/hx/core.js filters
+             on `cfg.nonum || z.p` and `nonum` defaults to 0, so the five zones
+             with no number are HIDDEN unless the pilot turns them on. hx-call's
+             own CLAUDE.md is explicit that the pages "must never imply the list
+             is a survey of what is nearby", and that bullet did exactly that. -->
+        <li><b>8 of the 13</b> Swiss HX zones publish a number to call</li>
         <li>A <b>re-check clock</b> per zone, because one call is not enough</li>
       </ul>
       <a class="cta" href="https://freeflight-tools.github.io/hx-call/">
