@@ -192,7 +192,24 @@ h2{
 
 /* the phone: no frame of ours, the capture brings its own */
 .shot{margin:0}
-.shot img{display:block;width:100%;max-width:330px;margin:0 auto;height:auto;filter:drop-shadow(0 26px 44px var(--glow))}
+/* `will-change` is a SAFARI REPAINT FIX, not an optimisation, and the filter
+   it names never actually changes.
+
+   Hovering the HX band's `.cta` glitched this image's drop-shadow in Safari
+   only, and only on that band. The trigger is the pair of them: the button
+   takes a `transform` AND a `filter` layer on hover (see the hover block near
+   the bottom), and `.tool` clips with `overflow:hidden`, so Safari
+   re-rasterises the band and gets the shadow's region wrong. What made it the
+   HX band alone is `.alt`, which sets `order` on `.txt` and `.shot`: paint
+   order then differs from DOM order, and the invalidation follows the wrong
+   one. The Windmap band has no `.alt`, so the two agree and it repaints
+   correctly.
+
+   Naming the filter gives the image its own stable layer, so a sibling's
+   hover cannot dirty it. Applied to both bands rather than just `.alt`,
+   because the next band to be reordered should not reintroduce this. */
+.shot img{display:block;width:100%;max-width:330px;margin:0 auto;height:auto;
+  filter:drop-shadow(0 26px 44px var(--glow));will-change:filter}
 .shot figcaption{
   margin-top:16px;text-align:center;font-size:13px;line-height:1.5;color:var(--dim);
   max-width:34ch;margin-left:auto;margin-right:auto;
