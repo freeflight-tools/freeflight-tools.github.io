@@ -56,6 +56,14 @@
      app.html or widget.html in either repo: those are read in the air,
      HX Call exists to work with no data connection, and a third-party
      would put a network dependency inside that guarantee.
+
+     VISIT COUNTING follows exactly the same rule, in the slot below it.
+     Cloudflare Web Analytics, cookieless, on these three pages only. It
+     stores nothing on the device and builds no cross-site profile, which
+     is what keeps it out of consent-banner territory, and the small print
+     names it rather than hiding behind "we value your privacy". If it ever
+     reaches app.html or widget.html, that is a bug: those pages promise
+     "no analytics" in their own text and must stay able to.
      ═══════════════════════════════════════════════════════════════════ -->
 <style>
 :root{
@@ -302,7 +310,7 @@ footer a{color:#7FB6EE}
     <p>
       Two small tools for cross-country paraglider pilots. They run inside
       <b>XCTrack</b> as a web page widget, or on their own in any browser.
-      Free, no account, nothing tracked.
+      Free, no account, and nothing tracked while you fly.
     </p>
   </div>
 </header>
@@ -474,7 +482,20 @@ footer a{color:#7FB6EE}
     <p class="note">
       <b>Your position stays on your phone.</b> Windmap asks winds.mobi which
       stations are in the area around you, and that is the only thing either tool
-      ever sends. No accounts, no analytics, no tracking.
+      ever sends. No accounts, and no profile of you anywhere.
+    </p>
+    <!-- This page said "no analytics" before there were any, so it cannot stay
+         as it was. The distinction that is actually true, and the one a reader
+         cares about, is NOT tools-versus-nothing: it is the pages you fly with
+         against the pages you set up on. Said plainly and by name, because
+         "we use cookies to improve your experience" is how you lose someone
+         who came here for a tool that promised not to. -->
+    <p class="note">
+      <b>These three pages count visits.</b> This one and the two setup pages use
+      Cloudflare Web Analytics: a tally of page views and the country they came
+      from. No cookies, no identifier, nothing stored on your device, and no way
+      to follow you anywhere else. <b>The tools themselves never do this.</b> The
+      list and the widget you fly with make no such request at all.
     </p>
     <!-- The page shows wind readings on every screen and never said whose they
          are. winds.mobi does the aggregating, and the measurements belong to
@@ -517,6 +538,36 @@ footer a{color:#7FB6EE}
 <div class="gtranslate_wrapper"></div>
 <script>window.gtranslateSettings = {"default_language":"en","native_language_names":true,"detect_browser_language":true,"languages":["en","de","fr","it","es"],"wrapper_selector":".gtranslate_wrapper","switcher_horizontal_position":"right","switcher_vertical_position":"top","float_switcher_open_direction":"bottom"}</script>
 <script src="https://cdn.gtranslate.net/widgets/latest/float.js" defer></script>
+
+<!-- ══ VISIT COUNTING ═══════════════════════════════════════════════════
+     Cloudflare Web Analytics, on THIS PAGE ONLY. Never app.html and never
+     widget.html: those are read in the air, HX Call exists to work with no
+     data connection at all, and a beacon there would put a network request
+     inside that guarantee. Same rule as the translation widget above, and
+     for the same reason.
+
+     Cookieless by design. It stores nothing on the device and builds no
+     cross-site profile, which is what keeps it out of consent-banner
+     territory. The small print says so in plain words, because the page
+     promised "no analytics" before this existed and must not now be wrong
+     about itself.
+
+     THE TOKEN IS INJECTED, not hardcoded into a <script src>. An
+     unconfigured page then makes NO request at all: until a real 32-hex
+     token is pasted in, this does nothing and costs nothing. Fail closed,
+     so the page is safe to ship before the account exists.
+     ═══════════════════════════════════════════════════════════════════ -->
+<script>
+(function () {
+  var TOKEN = "2537f91a24654d4c8ed453f8c445c6b9";
+  if (!/^[a-f0-9]{32}$/.test(TOKEN)) return;      /* not set up yet */
+  var s = document.createElement("script");
+  s.defer = true;
+  s.src = "https://static.cloudflareinsights.com/beacon.min.js";
+  s.setAttribute("data-cf-beacon", '{"token":"' + TOKEN + '"}');
+  document.head.appendChild(s);
+})();
+</script>
 
 </body>
 </html>
