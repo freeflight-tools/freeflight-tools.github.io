@@ -70,14 +70,41 @@ WINDMAP = dict(
     box=35.41, bcx=-3.69, bcy=2.58,
 )
 
+# (filename, size, plate)  —  plate None means TRANSPARENT.
+#
+# Not every PNG wants a plate, and which ones do is decided by who consumes
+# them, not by taste:
+#
+#   icon-192 / icon-512      manifest `purpose: any`. Browsers show these in
+#                            bookmarks, the install prompt and home-screen
+#                            tiles, composited on the browser's own surface.
+#                            A plate here is a visible square, which is what
+#                            put a white box behind the Windmap arrow.
+#   icon-512-maskable        manifest `purpose: maskable`. Android crops it to
+#                            the launcher's shape and assumes the outer fifth
+#                            is disposable background, so it MUST be a
+#                            full-bleed square. Transparent here crops to
+#                            nothing.
+#   icon-180                 apple-touch-icon. iOS does not honour alpha and
+#                            composites transparency onto black, so this one
+#                            stays opaque whatever the others do.
+#
+# The family and HX Call marks are plate-based by design (a tile with a mark
+# on it), so they keep theirs everywhere. Only Windmap's arrow is meant to
+# float, and only its `any` icons go clear.
+PLATED   = lambda c: [("icon-180.png", 180, c), ("icon-192.png", 192, c),
+                      ("icon-512.png", 512, c), ("icon-512-maskable.png", 512, c)]
+FLOATING = lambda c: [("icon-180.png", 180, c), ("icon-192.png", 192, None),
+                      ("icon-512.png", 512, None), ("icon-512-maskable.png", 512, c)]
+
 JOBS = [
-    ("freeflight-tools.github.io", FAMILY, [180, 192, 512]),
-    ("hx-call",                    HXCALL, [180, 192, 512]),
-    ("windgrade",                  WINDMAP, [180, 192, 512]),
+    ("freeflight-tools.github.io", FAMILY,  PLATED("#0B1218")),
+    ("hx-call",                    HXCALL,  PLATED("#1E6FA8")),
+    ("windgrade",                  WINDMAP, FLOATING("#FFFFFF")),
 ]
 
 
-def svg_for(spec):
+def svg_for(spec, plate):
     if "box" in spec:
         k = 64 * SAFE / spec["box"]
         inner = ('<g transform="translate(32 32) scale(%.5f) translate(%.3f %.3f) '
@@ -86,32 +113,37 @@ def svg_for(spec):
     else:
         inner = ('<g transform="translate(32 32) scale(%.4f) translate(-32 -32)">%s</g>'
                  % (SAFE, spec["art"]))
+    bg = '' if plate is None else '<rect width="64" height="64" fill="%s"/>' % plate
     return ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" '
-            'width="100%%" height="100%%">'
-            '<rect width="64" height="64" fill="%s"/>%s</svg>' % (spec["plate"], inner))
+            'width="100%%" height="100%%">' + bg + inner + '</svg>')
 
 
-def build(repo, spec, sizes):
+def build(repo, spec, variants):
     OUT.mkdir(parents=True, exist_ok=True)
-    svg = svg_for(spec)
-    for n in sizes:
-        page = OUT / ("%s-%d.html" % (repo.replace(".", "_"), n))
+    for name, n, plate in variants:
+        svg = svg_for(spec, plate)
+        tag = name.replace(".png", "")
+        page = OUT / ("%s-%s.html" % (repo.replace(".", "_"), tag))
         page.write_text(
             '<!doctype html><meta charset="utf-8">'
-            '<style>html,body{margin:0;padding:0;overflow:hidden}'
+            '<style>html,body{margin:0;padding:0;overflow:hidden;background:none}'
             'svg{display:block;width:%dpx;height:%dpx}</style>%s' % (n, n, svg))
-        png = OUT / ("%s-icon-%d.png" % (repo.replace(".", "_"), n))
-        subprocess.run([CHROME, "--headless=new", "--hide-scrollbars",
-                        "--force-device-scale-factor=1",
-                        "--virtual-time-budget=3000",
-                        "--window-size=%d,%d" % (n, n),
-                        "--screenshot=%s" % png,
-                        "file://%s" % page], capture_output=True)
-        dest = REPOS / repo / ("icon-%d.png" % n)
+        png = OUT / ("%s-%s.png" % (repo.replace(".", "_"), tag))
+        cmd = [CHROME, "--headless=new", "--hide-scrollbars",
+               "--force-device-scale-factor=1", "--virtual-time-budget=3000",
+               "--window-size=%d,%d" % (n, n), "--screenshot=%s" % png,
+               "file://%s" % page]
+        # Chrome paints an opaque white page unless told otherwise, which would
+        # silently fill in every transparent icon with exactly the white box
+        # this split exists to remove.
+        if plate is None:
+            cmd.insert(1, "--default-background-color=00000000")
+        subprocess.run(cmd, capture_output=True)
+        dest = REPOS / repo / name
         if not png.exists():
-            print("FAILED", repo, n); sys.exit(1)
+            print("FAILED", repo, name); sys.exit(1)
         dest.write_bytes(png.read_bytes())
-        print("  wrote", dest)
+        print("  wrote %-24s %s" % (name, "transparent" if plate is None else plate))
 
 
 for repo, spec, sizes in JOBS:
