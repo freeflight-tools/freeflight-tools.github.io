@@ -8,6 +8,20 @@ pilots. Live at **[freeflight-tools.github.io](https://freeflight-tools.github.i
 | **[Windmap](https://github.com/freeflight-tools/xctrack-windmap)** | Wind stations near you, drawn where they actually are. An XCTrack overlay plus a standalone list. |
 | **[HX Call](https://github.com/freeflight-tools/hx-call)** | The phone number that says whether a Swiss HX airspace is active. Needs no data connection, only enough signal to dial. |
 
+## The XCTrack widget skill
+
+Building the two tools above turned up a lot of measured detail about XCTrack's
+Web page widget: what its JS bridge exposes, which settings a pilot must set,
+what the WebView can and cannot do, and the traps that each cost an afternoon to
+find. That is packaged as an agent skill so it is useful to anyone building a
+third widget, not just to us.
+
+    npx skills add freeflight-tools/freeflight-tools.github.io
+
+Nothing in it is specific to wind or airspace. It lives in
+[`skills/xctrack-web-widget/`](skills/xctrack-web-widget/), and everything in it
+was measured on device rather than inferred.
+
 ## What's in here
 
     index.html      the whole site
@@ -16,6 +30,7 @@ pilots. Live at **[freeflight-tools.github.io](https://freeflight-tools.github.i
     img/            screenshots and the social preview cards
     img/screenshots/     the full-resolution masters the web files come from
     tools/og-card.html   regenerates img/og-hub.jpg
+    skills/         the XCTrack web widget skill, published to skills.sh
 
 One file, no dependencies, no build step, same as the tools it links to.
 
